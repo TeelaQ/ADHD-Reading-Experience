@@ -5,12 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADHD Reading Experience</title>
     <style>
+        /* Add styles to prevent scrolling when modal is open */
+        body.modal-open {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+
         .video-container {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            padding-bottom: 177.78%; /* 9:16 aspect ratio for vertical video */
             height: 0;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin: -20px -20px 20px -20px;
+            border-radius: 12px 12px 0 0;
         }
         
         .video-container video {
@@ -19,7 +28,41 @@
             left: 0;
             width: 100%;
             height: 100%;
-            border: none;
+            object-fit: contain; /* This will maintain aspect ratio */
+            background: black; /* Background for letterboxing */
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            z-index: 1000;
+            width: 90%;
+            max-width: 400px;
+            height: 90vh; /* Increased height for better video visibility */
+            max-height: 800px; /* Increased max-height */
+            overflow-y: auto;
+            display: none;
+            flex-direction: column;
+        }
+
+        /* Media query for mobile devices */
+        @media (max-width: 768px) {
+            .modal {
+                width: 95%;
+                max-width: none;
+                height: 95vh;
+            }
+            
+            .video-container {
+                margin: -15px -15px 15px -15px;
+            }
         }
 
         .close-button {
@@ -44,6 +87,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
+        /* Updated modal styles for better mobile responsiveness */
         .modal {
             display: none;
             position: fixed;
@@ -52,11 +96,125 @@
             transform: translate(-50%, -50%);
             background: white;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
             z-index: 1000;
-            width: 80%;
-            max-width: 400px;
+            width: 90%;
+            max-width: 400px; /* More phone-like width */
+            height: 80vh; /* Taller vertical layout */
+            max-height: 600px;
+            overflow-y: auto;
+            display: none;
+            flex-direction: column; /* Vertical layout */
+            justify-content: space-between;
+        }
+
+        /* Improved reading styles */
+        .article {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            max-width: 680px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .article p {
+            font-size: 18px;
+            color: #2D3748;
+            margin-bottom: 1.5em;
+            letter-spacing: 0.3px;
+        }
+
+        .article h1 {
+            font-size: 32px;
+            color: #1A202C;
+            margin-bottom: 1em;
+            line-height: 1.4;
+        }
+
+        .article h2 {
+            font-size: 24px;
+            color: #2D3748;
+            margin-top: 2em;
+            margin-bottom: 1em;
+        }
+
+        /* Light mode optimizations */
+        body {
+            background-color: #F7FAFC;
+            color: #2D3748;
+        }
+
+        /* Better spacing for modal content */
+        .modal h2 {
+            margin-bottom: 1.5em;
+            color: #2D3748;
+        }
+
+        .video-container {
+            margin: -20px -20px 20px -20px;
+            border-radius: 12px 12px 0 0;
+            overflow: hidden;
+        }
+
+        button {
+            background: #6B46C1;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background: #553C9A;
+            transform: translateY(-1px);
+        }
+
+        input {
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            transition: border-color 0.2s ease;
+        }
+
+        input:focus {
+            border-color: #6B46C1;
+            outline: none;
+        }
+
+        /* Better mobile experience */
+        @media (max-width: 768px) {
+            .article {
+                padding: 20px;
+            }
+
+            .article p {
+                font-size: 16px;
+            }
+
+            .article h1 {
+                font-size: 28px;
+            }
+
+            .article h2 {
+                font-size: 22px;
+            }
+        }
+
+        /* Media query for mobile devices */
+        @media (max-width: 768px) {
+            .modal {
+                width: 95%;
+                padding: 15px;
+            }
+            
+            .video-container {
+                margin: -15px;
+                margin-bottom: 15px;
+            }
         }
 
         .overlay {
@@ -71,7 +229,7 @@
         }
 
         button {
-            background: #8B5CF6; /* Purple */
+            background: #8B5CF6;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -79,14 +237,15 @@
             cursor: pointer;
             margin-top: 10px;
             transition: background-color 0.2s;
+            width: 100%;
         }
 
         button:hover {
-            background: #7C3AED; /* Darker purple on hover */
+            background: #7C3AED;
         }
 
         button:disabled {
-            background: #C4B5FD; /* Lighter purple when disabled */
+            background: #C4B5FD;
             cursor: not-allowed;
         }
 
@@ -117,7 +276,39 @@
     
     <div class="article" id="article">
         <h1>Understanding Neurodiversity: A Paradigm Shift in How We View Human Cognition</h1>
-        <!-- Article content will be inserted here by JavaScript -->
+        
+        <p>Neurodiversity represents a revolutionary shift in how we understand human cognitive differences. It represents a revolutionary shift that challenges traditional views of neurological variations. This paradigm shift, this revolutionary change in thinking, is transforming how society views conditions like autism, ADHD, dyslexia, and other neurological variations. It is transforming how we think about human cognition itself.</p>
+
+        <p>The concept of neurodiversity emerged in the late 1990s, primarily through the advocacy of autistic individuals who rejected the idea that their neurological differences were inherently pathological. They rejected the idea that their ways of thinking and being were somehow wrong. They rejected the medical model that viewed their neurology as something to be fixed or cured. Instead, they proposed a radical new perspective: that neurological differences are natural variations in human cognition, just as biodiversity represents natural variations in ecosystems.</p>
+
+        <h2>The Foundation of Neurodiversity</h2>
+        <p>At its core, the neurodiversity paradigm suggests that neurological differences are not deficits but rather natural variations in human neurocognitive functioning. These variations, these different ways of thinking and processing information, are not mistakes. They are not mistakes in human development. They are not errors to be corrected. Rather, they represent the rich tapestry of human cognitive diversity. This diversity, this wonderful variety in human thinking, enriches our collective human experience.</p>
+
+        <p>The neurodiversity movement emphasizes several key principles. These principles reshape our understanding. These principles transform our perspective. First, neurological differences are natural and valuable expressions of human diversity. Second, these differences contribute unique strengths and perspectives to human society. Third, the challenges faced by neurodivergent individuals often stem from societal barriers rather than inherent deficits.</p>
+
+        <h2>Strengths and Challenges</h2>
+        <p>Neurodivergent individuals often possess unique strengths and abilities. They often see the world in ways that others might miss. They often process information in novel and innovative ways. For instance, many autistic individuals demonstrate exceptional pattern recognition abilities. Many individuals with ADHD exhibit remarkable creativity and problem-solving skills. Many dyslexic individuals show superior spatial reasoning abilities.</p>
+
+        <p>However, these individuals also face real challenges in a world designed primarily for neurotypical minds. They face challenges in education systems that may not accommodate their learning styles. They face challenges in workplaces that may not recognize their unique contributions. They face challenges in social situations that may not align with their natural ways of interacting. These challenges, these difficulties, these obstacles, are often more about societal structures than individual limitations.</p>
+
+        <h2>The Impact on Society</h2>
+        <p>The neurodiversity paradigm is reshaping how we think about education, employment, and social interaction. It is reshaping how we design our institutions. It is reshaping how we structure our society. In education, there is growing recognition of the need to accommodate different learning styles and cognitive approaches. In the workplace, companies are beginning to recognize the valuable perspectives and skills that neurodivergent individuals bring to their teams.</p>
+
+        <p>This shift in thinking has practical implications. It has real-world consequences. It has tangible effects on how we structure our institutions. Schools are implementing more flexible teaching methods. Workplaces are creating more inclusive environments. Social spaces are becoming more accommodating of different ways of being and interacting.</p>
+
+        <h2>The Role of Support and Accommodation</h2>
+        <p>Supporting neurodivergent individuals isn't about "fixing" them - it's about creating environments where they can thrive. It's about making adjustments that allow their unique strengths to shine. It's about removing unnecessary barriers to their success. This might involve providing quiet spaces in noisy environments. This might involve offering alternative communication methods. This might involve adjusting expectations around social interaction.</p>
+
+        <p>Accommodations are not special privileges. They are not unfair advantages. They are not unnecessary concessions. Rather, they are essential tools for creating an equitable society. They are fundamental requirements for true inclusion. They are basic necessities for allowing all individuals to participate fully in society.</p>
+
+        <h2>Looking to the Future</h2>
+        <p>The future of neurodiversity holds both promise and challenges. It holds opportunities and obstacles. It holds potential and difficulties. As our understanding of human cognitive variation grows, so too must our commitment to creating truly inclusive societies. This commitment must extend beyond mere tolerance to genuine acceptance and appreciation.</p>
+
+        <p>The neurodiversity movement continues to evolve. It continues to grow. It continues to shape our understanding of human difference. As we move forward, the goal is not just acceptance but celebration of neurological differences. The goal is not just accommodation but genuine appreciation of diverse ways of thinking and being.</p>
+
+        <p>This evolution in thinking, this transformation in understanding, this shift in perspective, represents more than just a change in how we view neurological differences. It represents a fundamental change in how we understand human diversity itself. It represents a crucial step toward a more inclusive and equitable society for all.</p>
+
+        <p>Together, we can create a world that truly embraces neurodiversity. Together, we can build a society that values all kinds of minds. Together, we can foster environments where everyone can thrive, regardless of how their brain works. This is not just a possibility - it is an imperative for creating a more just and equitable world for all.</p>
     </div>
 
     <div class="overlay" id="overlay"></div>
@@ -126,58 +317,118 @@
     <div class="modal" id="videoModal">
         <div class="video-container">
             <video id="distractionVideo" controls autoplay muted>
-                <source src="distractor.mp4" type="video/mp4">
+                <source src="Distractor.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
-        <button id="continueButton" onclick="closeVideoModal()" class="close-button" disabled>请观看完视频 (12秒)</button>
+        <button id="continueButton" onclick="closeVideoModal()" class="close-button" disabled>請觀看完影片 (12秒)</button>
     </div>
 
     <!-- Math Pop-up -->
     <div class="modal" id="mathModal">
-        <h2>快速数学练习！</h2>
-        <p>请解决以下问题：</p>
+        <h2>快速數學練習！</h2>
+        <p>請解決以下問題：</p>
         <p id="mathQuestion"></p>
-        <input type="number" id="mathAnswer" placeholder="输入你的答案">
+        <input type="number" id="mathAnswer" placeholder="輸入你的答案">
         <button onclick="checkMathAnswer()">提交答案</button>
     </div>
 
     <!-- Lunch Pop-up -->
     <div class="modal" id="lunchModal">
-        <h2>午餐时间到了！</h2>
-        <p>你考虑过今天午餐吃什么了吗？</p>
-        <button onclick="answerLunch('yes')">是的，我知道要吃什么</button>
-        <button onclick="answerLunch('no')">还没想好</button>
+        <h2>午餐時間到了！</h2>
+        <p>你考慮過今天午餐吃什麼了嗎？</p>
+        <button onclick="answerLunch('yes')">是的，我知道要吃什麼</button>
+        <button onclick="answerLunch('no')">還沒想好</button>
         <div id="lunchFollowUp" style="display: none;">
-            <p>建议你现在开始考虑：</p>
+            <p>建議你現在開始考慮：</p>
             <ul>
-                <li>你想吃热食还是冷食？</li>
-                <li>你更喜欢中餐还是西餐？</li>
-                <li>你有多少时间用来吃午餐？</li>
+                <li>你想吃熱食還是冷食？</li>
+                <li>你更喜歡中餐還是西餐？</li>
+                <li>你有多少時間用來吃午餐？</li>
             </ul>
-            <button onclick="closeLunchModal()">好的，我会认真考虑</button>
+            <button onclick="closeLunchModal()">好的，我會認真考慮</button>
         </div>
     </div>
 
     <script>
-        // Show video modal immediately when page loads
+        // Function to toggle body scroll lock
+        function toggleBodyScroll(lock) {
+            if (lock) {
+                document.body.classList.add('modal-open');
+            } else {
+                document.body.classList.remove('modal-open');
+            }
+        }
+
+        // Update modal show/hide functions
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            toggleBodyScroll(true);
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+            toggleBodyScroll(false);
+        }
+
+        // Update existing modal functions
+        function closeVideoModal() {
+            const video = document.getElementById('distractionVideo');
+            video.pause();
+            video.currentTime = 0;
+            hideModal('videoModal');
+        }
+
+        function showMathModal() {
+            currentMathProblem = mathProblems[Math.floor(Math.random() * mathProblems.length)];
+            document.getElementById('mathQuestion').textContent = currentMathProblem.question;
+            showModal('mathModal');
+        }
+
+        function checkMathAnswer() {
+            const userAnswer = parseInt(document.getElementById('mathAnswer').value);
+            if (userAnswer === currentMathProblem.answer) {
+                mathSolved = true;
+                hideModal('mathModal');
+            } else {
+                alert('答案不對，請重試！');
+            }
+        }
+
+        function showLunchModal() {
+            showModal('lunchModal');
+        }
+
+        function answerLunch(answer) {
+            if (answer === 'yes') {
+                lunchAnswered = true;
+                hideModal('lunchModal');
+            } else {
+                document.getElementById('lunchFollowUp').style.display = 'block';
+            }
+        }
+
+        function closeLunchModal() {
+            lunchAnswered = true;
+            hideModal('lunchModal');
+        }
+
+        // Show video modal with scroll lock
         window.addEventListener('load', () => {
-            // Delay video popup by 3 seconds
             setTimeout(() => {
-                document.getElementById('videoModal').style.display = 'block';
-                document.getElementById('overlay').style.display = 'block';
+                showModal('videoModal');
                 
                 const video = document.getElementById('distractionVideo');
                 const continueButton = document.getElementById('continueButton');
                 
-                // Try to play the video
                 video.play().catch(function(error) {
                     console.log("Video autoplay failed:", error);
-                    // If autoplay fails, show a play button or message
                     video.setAttribute('controls', 'true');
                 });
 
-                let timeLeft = 12; // video duration in seconds
+                let timeLeft = 12;
                 const timer = setInterval(() => {
                     if (timeLeft > 0) {
                         continueButton.textContent = `请观看完视频 (${timeLeft}秒)`;
@@ -189,23 +440,13 @@
                     }
                 }, 1000);
 
-                // Enable button when video ends
                 video.addEventListener('ended', () => {
                     continueButton.disabled = false;
                     continueButton.textContent = '继续阅读';
                     clearInterval(timer);
                 });
-            }, 3000); // 3 second delay
+            }, 3000);
         });
-
-        function closeVideoModal() {
-            const video = document.getElementById('distractionVideo');
-            video.pause();
-            video.currentTime = 0;
-            document.getElementById('videoModal').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-            document.body.classList.remove('modal-open'); // Re-enable scrolling
-        }
 
         // Initialize variables
         let mathSolved = false;
@@ -216,42 +457,6 @@
             { question: "8 × 7 = ?", answer: 56 }
         ];
         let currentMathProblem;
-
-        // Insert article content
-        document.getElementById('article').innerHTML += `
-            <p>Neurodiversity represents a revolutionary shift in how we understand human cognitive differences. It represents a revolutionary shift that challenges traditional views of neurological variations. This paradigm shift, this revolutionary change in thinking, is transforming how society views conditions like autism, ADHD, dyslexia, and other neurological variations. It is transforming how we think about human cognition itself.</p>
-
-            <p>The concept of neurodiversity emerged in the late 1990s, primarily through the advocacy of autistic individuals who rejected the idea that their neurological differences were inherently pathological. They rejected the idea that their ways of thinking and being were somehow wrong. They rejected the medical model that viewed their neurology as something to be fixed or cured. Instead, they proposed a radical new perspective: that neurological differences are natural variations in human cognition, just as biodiversity represents natural variations in ecosystems.</p>
-
-            <h2>The Foundation of Neurodiversity</h2>
-            <p>At its core, the neurodiversity paradigm suggests that neurological differences are not deficits but rather natural variations in human neurocognitive functioning. These variations, these different ways of thinking and processing information, are not mistakes. They are not mistakes in human development. They are not errors to be corrected. Rather, they represent the rich tapestry of human cognitive diversity. This diversity, this wonderful variety in human thinking, enriches our collective human experience.</p>
-
-            <p>The neurodiversity movement emphasizes several key principles. These principles reshape our understanding. These principles transform our perspective. First, neurological differences are natural and valuable expressions of human diversity. Second, these differences contribute unique strengths and perspectives to human society. Third, the challenges faced by neurodivergent individuals often stem from societal barriers rather than inherent deficits.</p>
-
-            <h2>Strengths and Challenges</h2>
-            <p>Neurodivergent individuals often possess unique strengths and abilities. They often see the world in ways that others might miss. They often process information in novel and innovative ways. For instance, many autistic individuals demonstrate exceptional pattern recognition abilities. Many individuals with ADHD exhibit remarkable creativity and problem-solving skills. Many dyslexic individuals show superior spatial reasoning abilities.</p>
-
-            <p>However, these individuals also face real challenges in a world designed primarily for neurotypical minds. They face challenges in education systems that may not accommodate their learning styles. They face challenges in workplaces that may not recognize their unique contributions. They face challenges in social situations that may not align with their natural ways of interacting. These challenges, these difficulties, these obstacles, are often more about societal structures than individual limitations.</p>
-
-            <h2>The Impact on Society</h2>
-            <p>The neurodiversity paradigm is reshaping how we think about education, employment, and social interaction. It is reshaping how we design our institutions. It is reshaping how we structure our society. In education, there is growing recognition of the need to accommodate different learning styles and cognitive approaches. In the workplace, companies are beginning to recognize the valuable perspectives and skills that neurodivergent individuals bring to their teams.</p>
-
-            <p>This shift in thinking has practical implications. It has real-world consequences. It has tangible effects on how we structure our institutions. Schools are implementing more flexible teaching methods. Workplaces are creating more inclusive environments. Social spaces are becoming more accommodating of different ways of being and interacting.</p>
-
-            <h2>The Role of Support and Accommodation</h2>
-            <p>Supporting neurodivergent individuals isn't about "fixing" them - it's about creating environments where they can thrive. It's about making adjustments that allow their unique strengths to shine. It's about removing unnecessary barriers to their success. This might involve providing quiet spaces in noisy environments. This might involve offering alternative communication methods. This might involve adjusting expectations around social interaction.</p>
-
-            <p>Accommodations are not special privileges. They are not unfair advantages. They are not unnecessary concessions. Rather, they are essential tools for creating an equitable society. They are fundamental requirements for true inclusion. They are basic necessities for allowing all individuals to participate fully in society.</p>
-
-            <h2>Looking to the Future</h2>
-            <p>The future of neurodiversity holds both promise and challenges. It holds opportunities and obstacles. It holds potential and difficulties. As our understanding of human cognitive variation grows, so too must our commitment to creating truly inclusive societies. This commitment must extend beyond mere tolerance to genuine acceptance and appreciation.</p>
-
-            <p>The neurodiversity movement continues to evolve. It continues to grow. It continues to shape our understanding of human difference. As we move forward, the goal is not just acceptance but celebration of neurological differences. The goal is not just accommodation but genuine appreciation of diverse ways of thinking and being.</p>
-
-            <p>This evolution in thinking, this transformation in understanding, this shift in perspective, represents more than just a change in how we view neurological differences. It represents a fundamental change in how we understand human diversity itself. It represents a crucial step toward a more inclusive and equitable society for all.</p>
-
-            <p>Together, we can create a world that truly embraces neurodiversity. Together, we can build a society that values all kinds of minds. Together, we can foster environments where everyone can thrive, regardless of how their brain works. This is not just a possibility - it is an imperative for creating a more just and equitable world for all.</p>
-        `;
 
         // Show modals at specific scroll positions
         window.addEventListener('scroll', () => {
@@ -265,45 +470,6 @@
                 showLunchModal();
             }
         });
-
-        function showMathModal() {
-            currentMathProblem = mathProblems[Math.floor(Math.random() * mathProblems.length)];
-            document.getElementById('mathQuestion').textContent = currentMathProblem.question;
-            document.getElementById('mathModal').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-        }
-
-        function checkMathAnswer() {
-            const userAnswer = parseInt(document.getElementById('mathAnswer').value);
-            if (userAnswer === currentMathProblem.answer) {
-                mathSolved = true;
-                document.getElementById('mathModal').style.display = 'none';
-                document.getElementById('overlay').style.display = 'none';
-            } else {
-                alert('答案不对，请重试！');
-            }
-        }
-
-        function showLunchModal() {
-            document.getElementById('lunchModal').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-        }
-
-        function answerLunch(answer) {
-            if (answer === 'yes') {
-                lunchAnswered = true;
-                document.getElementById('lunchModal').style.display = 'none';
-                document.getElementById('overlay').style.display = 'none';
-            } else {
-                document.getElementById('lunchFollowUp').style.display = 'block';
-            }
-        }
-
-        function closeLunchModal() {
-            lunchAnswered = true;
-            document.getElementById('lunchModal').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-        }
     </script>
 </body>
 </html>
