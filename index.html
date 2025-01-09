@@ -71,17 +71,23 @@
         }
 
         button {
-            background: #4CAF50;
+            background: #8B5CF6; /* Purple */
             color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 4px;
             cursor: pointer;
             margin-top: 10px;
+            transition: background-color 0.2s;
         }
 
         button:hover {
-            background: #45a049;
+            background: #7C3AED; /* Darker purple on hover */
+        }
+
+        button:disabled {
+            background: #C4B5FD; /* Lighter purple when disabled */
+            cursor: not-allowed;
         }
 
         input {
@@ -156,33 +162,38 @@
     <script>
         // Show video modal immediately when page loads
         window.addEventListener('load', () => {
-            document.getElementById('videoModal').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-            const video = document.getElementById('distractionVideo');
-            const continueButton = document.getElementById('continueButton');
-            
-            video.play().catch(function(error) {
-                console.log("Video autoplay failed:", error);
-            });
+            // Delay video popup by 3 seconds
+            setTimeout(() => {
+                document.getElementById('videoModal').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+                document.body.classList.add('modal-open'); // Prevent scrolling
+                
+                const video = document.getElementById('distractionVideo');
+                const continueButton = document.getElementById('continueButton');
+                
+                video.play().catch(function(error) {
+                    console.log("Video autoplay failed:", error);
+                });
 
-            let timeLeft = 12; // video duration in seconds
-            const timer = setInterval(() => {
-                if (timeLeft > 0) {
-                    continueButton.textContent = `请观看完视频 (${timeLeft}秒)`;
-                    timeLeft--;
-                } else {
-                    clearInterval(timer);
-                    continueButton.textContent = '继续阅读';
+                let timeLeft = 12; // video duration in seconds
+                const timer = setInterval(() => {
+                    if (timeLeft > 0) {
+                        continueButton.textContent = `请观看完视频 (${timeLeft}秒)`;
+                        timeLeft--;
+                    } else {
+                        clearInterval(timer);
+                        continueButton.textContent = '继续阅读';
+                        continueButton.disabled = false;
+                    }
+                }, 1000);
+
+                // Enable button when video ends
+                video.addEventListener('ended', () => {
                     continueButton.disabled = false;
-                }
-            }, 1000);
-
-            // Enable button when video ends
-            video.addEventListener('ended', () => {
-                continueButton.disabled = false;
-                continueButton.textContent = '继续阅读';
-                clearInterval(timer);
-            });
+                    continueButton.textContent = '继续阅读';
+                    clearInterval(timer);
+                });
+            }, 3000); // 3 second delay
         });
 
         function closeVideoModal() {
@@ -191,6 +202,7 @@
             video.currentTime = 0;
             document.getElementById('videoModal').style.display = 'none';
             document.getElementById('overlay').style.display = 'none';
+            document.body.classList.remove('modal-open'); // Re-enable scrolling
         }
 
         // Initialize variables
