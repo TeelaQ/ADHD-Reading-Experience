@@ -126,7 +126,7 @@
     <div class="modal" id="videoModal">
         <div class="video-container">
             <video id="distractionVideo" controls autoplay muted>
-                <source src="Distractor.mp4" type="video/mp4">
+                <source src="distractor.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
@@ -162,17 +162,19 @@
     <script>
         // Show video modal immediately when page loads
         window.addEventListener('load', () => {
-            // Delay video popup by 5 seconds
+            // Delay video popup by 3 seconds
             setTimeout(() => {
                 document.getElementById('videoModal').style.display = 'block';
                 document.getElementById('overlay').style.display = 'block';
-                document.body.classList.add('modal-open'); // Prevent scrolling
                 
                 const video = document.getElementById('distractionVideo');
                 const continueButton = document.getElementById('continueButton');
                 
+                // Try to play the video
                 video.play().catch(function(error) {
                     console.log("Video autoplay failed:", error);
+                    // If autoplay fails, show a play button or message
+                    video.setAttribute('controls', 'true');
                 });
 
                 let timeLeft = 12; // video duration in seconds
