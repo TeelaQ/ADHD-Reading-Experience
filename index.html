@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADHD Reading Experience</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #f9f9f9;
+        }
+        
+        .reading-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: left;
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        h2 {
+            color: #2a6d3c;
+            font-size: 1.4rem;
+            margin-top: 1.8rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 0.5rem;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        
+        strong {
+            color: #2a6d3c;
+        }
+        
+        ul {
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+        
+        /* Media queries for better mobile experience */
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+            
+            .reading-container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            h2 {
+                font-size: 1.2rem;
+            }
+            
+            p, li {
+                font-size: 0.95rem;
+                line-height: 1.6;
+            }
+        }
+        
+        /* Distractor styles */
+        .distractor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .distractor-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 80%;
+            max-height: 80%;
+            overflow: auto;
+            text-align: center;
+        }
+        
+        .close-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        
+        .flying-object {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 999;
+            display: none;
+        }
+        
+        .bee {
+            background-image: url('bee.png');
+        }
+        
+        .butterfly {
+            background-image: url('butterfly.png');
+        }
+        
+        /* Bubble as a popup */
+        .bubble {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .bubble-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 80%;
+            max-height: 80%;
+            overflow: auto;
+            text-align: center;
+        }
+        
+        .choice-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        
+        .image-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        
+        .image-container img {
+            max-width: 45%;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        
+        video {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="reading-container">
+        <h1>Understanding Neurodiversity: A Garden of Minds</h1>
+        
+        <p>Imagine a garden with many different types of flowers. Some grow tall and bright, catching everyone's eye. Others grow close to the ground, with small but beautiful blooms. Some need lots of sun, while others thrive in the shade. Each flower is unique, yet all are valuable parts of the garden. Human brains are like this garden—each one grows and blooms in its own special way.</p>
+        
+        <h2>What is Neurodiversity?</h2>
+        
+        <p>Neurodiversity means that people's brains naturally work in different ways. Just like our bodies look different on the outside, our brains can be different on the inside. These differences affect how we think, learn, feel, and connect with others.</p>
+        
+        <p>For a long time, people thought there was only one "right" way for a brain to work. If your brain worked differently, people said there was something wrong with you. But now we understand that brain differences are normal and natural. Every type of brain has its own strengths and challenges.</p>
+        
+        <h2>Types of Neurodivergence</h2>
+        
+        <p>Here are some common types of brain differences:</p>
+        
+        <p><strong>Autism</strong> - People with autism may notice details others miss and think deeply about special interests. They might find bright lights, loud noises, or social situations overwhelming. Some autistic people may communicate in ways that are different from others.</p>
+        
+        <p><strong>ADHD</strong> - People with ADHD have minds that are always active. They might find it hard to focus on one thing for a long time, but can be very creative and good at thinking outside the box. They often notice things others don't.</p>
+        
+        <p><strong>Dyslexia</strong> - People with dyslexia process written words differently. Reading might be harder for them, but many are strong visual thinkers with great problem-solving skills and creativity.</p>
+        
+        <p><strong>Dyspraxia</strong> - People with dyspraxia may find physical movements challenging. Simple tasks like writing or catching a ball might be difficult, but they often develop strong planning skills and verbal abilities.</p>
+        
+        <p><strong>Tourette's Syndrome</strong> - People with Tourette's have movements or sounds (called tics) they can't always control. Many are very creative and have excellent memories.</p>
+        
+        <h2>Why Neurodiversity Matters</h2>
+        
+        <p>Going back to our garden metaphor: What would happen if we only allowed one type of flower to grow? The garden would be less beautiful, less interesting, and less healthy.</p>
+        
+        <p>In the same way, human society needs all kinds of minds:</p>
+        
+        <ul>
+            <li>Different brain types solve problems in different ways. When we face big challenges, we need many types of thinking.</li>
+            <li>Neurodivergent people often have special strengths. Some can focus deeply on tasks, notice small details, think visually, or see patterns others miss.</li>
+            <li>The world would be boring if everyone thought the same way. Different minds create art, music, inventions, and ideas that make life richer.</li>
+        </ul>
+        
+        <p>Many famous people who changed our world were likely neurodivergent, including Albert Einstein, Temple Grandin, Mozart, and Leonardo da Vinci.</p>
+        
+        <h2>Challenges in Our World</h2>
+        
+        <p>In our garden metaphor, some flowers need special care to bloom. A shade-loving plant won't thrive in direct sun. A plant that needs lots of water won't do well in dry soil.</p>
+        
+        <p>Similarly, our world is often built for just one type of brain. This creates challenges for neurodivergent people:</p>
+        
+        <ul>
+            <li>Schools may teach in ways that only work for some types of learners.</li>
+            <li>Workplaces might value only certain ways of thinking or communicating.</li>
+            <li>Social rules can be confusing if your brain processes social information differently.</li>
+            <li>Sensory-heavy environments (bright lights, loud sounds, strong smells) can be painful for some neurodivergent people.</li>
+        </ul>
+        
+        <p>These challenges don't mean there's something wrong with neurodivergent people. They mean our world needs to make space for all types of minds.</p>
+        
+        <h2>Supporting Neurodiversity</h2>
+        
+        <p>How can we help our garden of minds to flourish? Here are some simple ways:</p>
+        
+        <p><strong>Learn and accept</strong> - Understanding different brain types helps us see behaviors in a new light. What looks like rudeness might be a different way of communicating. What seems like laziness might be executive function challenges.</p>
+        
+        <p><strong>Adjust environments</strong> - Small changes can make big differences. Quiet spaces, flexible schedules, clear instructions, and reduced sensory input can help neurodivergent people thrive.</p>
+        
+        <p><strong>Focus on strengths</strong> - Everyone has things they're good at. Help neurodivergent people find and use their strengths.</p>
+        
+        <p><strong>Be kind and patient</strong> - We all do better when people treat us with kindness. If someone is struggling, offer support without judgment.</p>
+        
+        <p><strong>Speak up</strong> - If you are neurodivergent, share your experiences when you feel safe doing so. If you're not, listen and learn from those who are.</p>
+        
+        <h2>Conclusion</h2>
+        
+        <p>Like a garden needs many types of plants to be healthy and beautiful, our world needs many types of minds. When we understand and value neurodiversity, everyone benefits.</p>
+        
+        <p>The next time you meet someone whose brain works differently from yours, remember the garden. That person isn't broken or wrong—they're just a different kind of flower, bringing their own special beauty to our world.</p>
+        
+        <p>By embracing neurodiversity, we create a world where everyone can grow and bloom in their own way.</p>
+    </div>
+    
+    <!-- Flying objects -->
+    <div class="flying-object bee" id="bee1"></div>
+    <div class="flying-object bee" id="bee2"></div>
+    <div class="flying-object bee" id="bee3"></div>
+    <div class="flying-object butterfly" id="butterfly1"></div>
+    <div class="flying-object butterfly" id="butterfly2"></div>
+    <div class="flying-object butterfly" id="butterfly3"></div>
+    
+    <!-- Bubble -->
+    <div class="bubble" id="bubble">
+        <div class="bubble-content">
+            <p>会有小狗形狀的花嗎？</p>
+        </div>
+    </div>
+    
+    <!-- Distractor 1: Flower Puppies -->
+    <div class="distractor" id="distractor1">
+        <div class="distractor-content">
+            <p>沒有小狗形狀的花，但你可以用花做小狗！</p>
+            <div class="image-container">
+                <img src="picture1.jpg" alt="Flower Puppy 1">
+                <img src="picture2.jpg" alt="Flower Puppy 2">
+            </div>
+            <button class="close-btn" id="close1" style="display: none;">關閉</button>
+        </div>
+    </div>
+    
+    <!-- Distractor 2: Puppy Video 1 -->
+    <div class="distractor" id="distractor2">
+        <div class="distractor-content">
+            <p>而且小狗可以在花瓣中泡澡。</p>
+            <video id="video1" controls>
+                <source src="Distractor 1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <button class="close-btn" id="close2" style="display: none;">關閉</button>
+        </div>
+    </div>
+    
+    <!-- Distractor 3: Puppy Video 2 -->
+    <div class="distractor" id="distractor3">
+        <div class="distractor-content">
+            <p>小狗甚至會吃花，尤其是爆米花。</p>
+            <video id="video2" controls>
+                <source src="Distractor 2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <button class="close-btn" id="close3" style="display: none;">關閉</button>
+        </div>
+    </div>
+    
+    <!-- Distractor 4: Food Question -->
+    <div class="distractor" id="distractor4">
+        <div class="distractor-content">
+            <p>那麼，你有想過等一下要吃什麼嗎？</p>
+            <button class="choice-btn" id="yes-btn">是的</button>
+            <button class="choice-btn" id="no-btn">沒有</button>
+        </div>
+    </div>
+    
+    <!-- Distractor 5: Think About Food -->
+    <div class="distractor" id="distractor5">
+        <div class="distractor-content">
+            <p>那麼，現在想想等一下要吃什麼吧。</p>
+            <button class="close-btn" id="close5" style="display: none;">關閉</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Start the distraction sequence - shortened for debugging
+            setTimeout(showFlyingObjects, 3000); // 3 seconds after page load
+            
+            // Flying objects animation
+            function showFlyingObjects() {
+                const bees = [
+                    document.getElementById('bee1'),
+                    document.getElementById('bee2'),
+                    document.getElementById('bee3')
+                ];
+                
+                const butterflies = [
+                    document.getElementById('butterfly1'),
+                    document.getElementById('butterfly2'),
+                    document.getElementById('butterfly3')
+                ];
+                
+                // Show flying objects
+                [...bees, ...butterflies].forEach(obj => {
+                    obj.style.display = 'block';
+                    animateObject(obj);
+                });
+                // Hide flying objects after 3 seconds
+                setTimeout(() => {
+                    [...bees, ...butterflies].forEach(obj => {
+                        obj.style.display = 'none';
+                    });
+                    
+                    // Show bubble after flying objects disappear
+                    setTimeout(showBubble, 1000);
+                }, 3000);
+            }
+            
+            // Animation function for flying objects
+            function animateObject(obj) {
+                // Get the first two paragraphs' position
+                const paragraphs = document.querySelectorAll('p');
+                const firstPara = paragraphs[0].getBoundingClientRect();
+                const secondPara = paragraphs[1].getBoundingClientRect();
+                
+                // Set initial position
+                const startX = Math.random() * (window.innerWidth - 30);
+                const startY = Math.random() * (secondPara.bottom - firstPara.top) + firstPara.top;
+                
+                obj.style.left = startX + 'px';
+                obj.style.top = startY + 'px';
+                
+                // Animate
+                let directionX = Math.random() > 0.5 ? 1 : -1;
+                let directionY = Math.random() > 0.5 ? 1 : -1;
+                let speed = 2 + Math.random() * 3;
+                
+                function move() {
+                    const rect = obj.getBoundingClientRect();
+                    let x = rect.left;
+                    let y = rect.top;
+                    
+                    // Change direction if hitting boundaries
+                    if (x <= 0 || x >= window.innerWidth - 30) directionX *= -1;
+                    if (y <= firstPara.top || y >= secondPara.bottom - 30) directionY *= -1;
+                    
+                    // Move object
+                    obj.style.left = (x + speed * directionX) + 'px';
+                    obj.style.top = (y + speed * directionY) + 'px';
+                    
+                    // Continue animation
+                    requestAnimationFrame(move);
+                }
+                
+                move();
+            }
+            
+            function showBubble() {
+                const bubble = document.getElementById('bubble');
+                
+                // Display the bubble as a popup
+                bubble.style.display = 'flex';
+                
+                // Show flower puppies after clicking bubble or after 3 seconds
+                bubble.addEventListener('click', () => {
+                    bubble.style.display = 'none';
+                    showFlowerPuppies();
+                });
+                
+                setTimeout(() => {
+                    bubble.style.display = 'none';
+                    showFlowerPuppies();
+                }, 3000);
+            }
+            
+            function showFlowerPuppies() {
+                const distractor1 = document.getElementById('distractor1');
+                const closeBtn1 = document.getElementById('close1');
+                
+                distractor1.style.display = 'flex';
+                
+                // Show close button after 1 second
+                setTimeout(() => {
+                    closeBtn1.style.display = 'inline-block';
+                }, 1000);
+                
+                closeBtn1.addEventListener('click', () => {
+                    distractor1.style.display = 'none';
+                    
+                    // Show puppy video 1 after 5 seconds
+                    setTimeout(showPuppyVideo1, 5000);
+                });
+            }
+            
+            function showPuppyVideo1() {
+                const distractor2 = document.getElementById('distractor2');
+                const video1 = document.getElementById('video1');
+                const closeBtn2 = document.getElementById('close2');
+                
+                distractor2.style.display = 'flex';
+                video1.play();
+                
+                // Show close button when video ends
+                video1.addEventListener('ended', () => {
+                    closeBtn2.style.display = 'inline-block';
+                });
+                
+                closeBtn2.addEventListener('click', () => {
+                    distractor2.style.display = 'none';
+                    
+                    // Show puppy video 2 after 5 seconds
+                    setTimeout(showPuppyVideo2, 5000);
+                });
+            }
+            
+            function showPuppyVideo2() {
+                const distractor3 = document.getElementById('distractor3');
+                const video2 = document.getElementById('video2');
+                const closeBtn3 = document.getElementById('close3');
+                
+                distractor3.style.display = 'flex';
+                video2.play();
+                
+                // Show close button when video ends
+                video2.addEventListener('ended', () => {
+                    closeBtn3.style.display = 'inline-block';
+                });
+                
+                closeBtn3.addEventListener('click', () => {
+                    distractor3.style.display = 'none';
+                    
+                    // Show food question after 5 seconds
+                    setTimeout(showFoodQuestion, 5000);
+                });
+            }
+            
+            function showFoodQuestion() {
+                const distractor4 = document.getElementById('distractor4');
+                const yesBtn = document.getElementById('yes-btn');
+                const noBtn = document.getElementById('no-btn');
+                
+                distractor4.style.display = 'flex';
+                
+                yesBtn.addEventListener('click', () => {
+                    distractor4.style.display = 'none';
+                });
+                
+                noBtn.addEventListener('click', () => {
+                    distractor4.style.display = 'none';
+                    showThinkAboutFood();
+                });
+            }
+            
+            function showThinkAboutFood() {
+                const distractor5 = document.getElementById('distractor5');
+                const closeBtn5 = document.getElementById('close5');
+                
+                distractor5.style.display = 'flex';
+                
+                // Show close button after 1 second
+                setTimeout(() => {
+                    closeBtn5.style.display = 'inline-block';
+                }, 1000);
+                
+                closeBtn5.addEventListener('click', () => {
+                    distractor5.style.display = 'none';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
